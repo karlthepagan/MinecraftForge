@@ -80,7 +80,42 @@
      }
  
      public boolean func_73056_e()
-@@ -349,7 +367,7 @@
+@@ -328,9 +346,13 @@
+ 
+         if (this.field_72986_A.func_76067_t() == WorldType.field_180272_g)
+         {
+-            for (ChunkCoordIntPair chunkcoordintpair1 : this.field_72993_I)
++            Iterator<ChunkCoordIntPair> activeChunkIterator = this.field_72993_I.iterator();
++            while(activeChunkIterator.hasNext())
+             {
+-                this.func_72964_e(chunkcoordintpair1.field_77276_a, chunkcoordintpair1.field_77275_b).func_150804_b(false);
++                long chunkcoordintpair1 = net.minecraftforge.common.ForgeChunkManager.nextPackedCoord(activeChunkIterator);
++                int chunkXPos = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordX(chunkcoordintpair1);
++                int chunkZPos = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordZ(chunkcoordintpair1);
++                this.func_72964_e(chunkXPos, chunkZPos).func_150804_b(false);
+             }
+         }
+         else
+@@ -338,18 +360,22 @@
+             int i = 0;
+             int j = 0;
+ 
+-            for (ChunkCoordIntPair chunkcoordintpair : this.field_72993_I)
++        	Iterator<ChunkCoordIntPair> activeChunkIterator = this.field_72993_I.iterator();
++            while(activeChunkIterator.hasNext())
+             {
+-                int k = chunkcoordintpair.field_77276_a * 16;
+-                int l = chunkcoordintpair.field_77275_b * 16;
++                long chunkcoordintpair = net.minecraftforge.common.ForgeChunkManager.nextPackedCoord(activeChunkIterator);
++                int chunkXPos = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordX(chunkcoordintpair);
++                int chunkZPos = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordZ(chunkcoordintpair);
++                int k = chunkXPos * 16;
++                int l = chunkZPos * 16;
+                 this.field_72984_F.func_76320_a("getChunk");
+-                Chunk chunk = this.func_72964_e(chunkcoordintpair.field_77276_a, chunkcoordintpair.field_77275_b);
++                Chunk chunk = this.func_72964_e(chunkXPos, chunkZPos);
+                 this.func_147467_a(k, l, chunk);
+                 this.field_72984_F.func_76318_c("tickChunk");
                  chunk.func_150804_b(false);
                  this.field_72984_F.func_76318_c("thunder");
  
@@ -89,7 +124,7 @@
                  {
                      this.field_73005_l = this.field_73005_l * 3 + 1013904223;
                      int i1 = this.field_73005_l >> 2;
-@@ -363,7 +381,7 @@
+@@ -363,7 +389,7 @@
  
                  this.field_72984_F.func_76318_c("iceandsnow");
  
@@ -98,7 +133,7 @@
                  {
                      this.field_73005_l = this.field_73005_l * 3 + 1013904223;
                      int k2 = this.field_73005_l >> 2;
-@@ -456,6 +474,9 @@
+@@ -456,6 +482,9 @@
              if (p_175654_2_.func_149698_L())
              {
                  i = 8;
@@ -108,7 +143,7 @@
  
                  if (this.func_175707_a(nextticklistentry.field_180282_a.func_177982_a(-i, -i, -i), nextticklistentry.field_180282_a.func_177982_a(i, i, i)))
                  {
-@@ -508,7 +529,7 @@
+@@ -508,7 +537,7 @@
  
      public void func_72939_s()
      {
@@ -117,7 +152,7 @@
          {
              if (this.field_80004_Q++ >= 1200)
              {
-@@ -573,6 +594,9 @@
+@@ -573,6 +602,9 @@
                  {
                      NextTickListEntry nextticklistentry1 = (NextTickListEntry)iterator.next();
                      iterator.remove();
@@ -127,7 +162,7 @@
                      int k = 0;
  
                      if (this.func_175707_a(nextticklistentry1.field_180282_a.func_177982_a(-k, -k, -k), nextticklistentry1.field_180282_a.func_177982_a(k, k, k)))
-@@ -696,22 +720,40 @@
+@@ -696,22 +728,40 @@
      {
          List<TileEntity> list = Lists.<TileEntity>newArrayList();
  
@@ -175,7 +210,7 @@
          return !this.field_73061_a.func_175579_a(this, p_175660_2_, p_175660_1_) && this.func_175723_af().func_177746_a(p_175660_2_);
      }
  
-@@ -777,6 +819,7 @@
+@@ -777,6 +827,7 @@
          }
          else
          {
@@ -183,7 +218,7 @@
              this.field_72987_B = true;
              WorldChunkManager worldchunkmanager = this.field_73011_w.func_177499_m();
              List<BiomeGenBase> list = worldchunkmanager.func_76932_a();
-@@ -822,7 +865,7 @@
+@@ -822,7 +873,7 @@
  
      protected void func_73047_i()
      {
@@ -192,7 +227,7 @@
  
          for (int i = 0; i < 10; ++i)
          {
-@@ -859,6 +902,7 @@
+@@ -859,6 +910,7 @@
              }
  
              this.field_73020_y.func_73151_a(p_73044_1_, p_73044_2_);
@@ -200,7 +235,7 @@
  
              for (Chunk chunk : Lists.newArrayList(this.field_73059_b.func_152380_a()))
              {
-@@ -892,6 +936,7 @@
+@@ -892,6 +944,7 @@
          this.field_72986_A.func_176135_e(this.func_175723_af().func_177732_i());
          this.field_73019_z.func_75755_a(this.field_72986_A, this.field_73061_a.func_71203_ab().func_72378_q());
          this.field_72988_C.func_75744_a();
@@ -208,7 +243,7 @@
      }
  
      public void func_72923_a(Entity p_72923_1_)
-@@ -947,6 +992,7 @@
+@@ -947,6 +1000,7 @@
      public Explosion func_72885_a(Entity p_72885_1_, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_)
      {
          Explosion explosion = new Explosion(this, p_72885_1_, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_, p_72885_9_, p_72885_10_);
@@ -216,7 +251,7 @@
          explosion.func_77278_a();
          explosion.func_77279_a(false);
  
-@@ -1026,19 +1072,23 @@
+@@ -1026,19 +1080,23 @@
              this.field_73061_a.func_71203_ab().func_148537_a(new S2BPacketChangeGameState(8, this.field_73017_q), this.field_73011_w.func_177502_q());
          }
  
@@ -244,7 +279,7 @@
          }
      }
  
-@@ -1104,6 +1154,11 @@
+@@ -1104,6 +1162,11 @@
          return this.field_73061_a.func_152345_ab();
      }
  

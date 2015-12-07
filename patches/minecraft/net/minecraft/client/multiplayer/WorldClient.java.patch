@@ -1,6 +1,14 @@
 --- ../src-base/minecraft/net/minecraft/client/multiplayer/WorldClient.java
 +++ ../src-work/minecraft/net/minecraft/client/multiplayer/WorldClient.java
-@@ -52,12 +52,13 @@
+@@ -45,19 +45,20 @@
+     private final Set<Entity> field_73032_d = Sets.<Entity>newHashSet();
+     private final Set<Entity> field_73036_L = Sets.<Entity>newHashSet();
+     private final Minecraft field_73037_M = Minecraft.func_71410_x();
+-    private final Set<ChunkCoordIntPair> field_73038_N = Sets.<ChunkCoordIntPair>newHashSet();
++    private final Set<ChunkCoordIntPair> field_73038_N = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordSet();
+ 
+     public WorldClient(NetHandlerPlayClient p_i45063_1_, WorldSettings p_i45063_2_, int p_i45063_3_, EnumDifficulty p_i45063_4_, Profiler p_i45063_5_)
+     {
          super(new SaveHandlerMP(), new WorldInfo(p_i45063_2_, "MpServer"), WorldProvider.func_76570_a(p_i45063_3_), p_i45063_5_, true);
          this.field_73035_a = p_i45063_1_;
          this.func_72912_H().func_176144_a(p_i45063_4_);
@@ -15,3 +23,31 @@
      }
  
      public void func_72835_b()
+@@ -112,17 +113,22 @@
+ 
+         int i = 0;
+ 
+-        for (ChunkCoordIntPair chunkcoordintpair : this.field_72993_I)
++        java.util.Iterator<ChunkCoordIntPair> activeChunkIterator = this.field_72993_I.iterator();
++        while(activeChunkIterator.hasNext())
+         {
++            long chunkcoordintpair = net.minecraftforge.common.ForgeChunkManager.nextPackedCoord(activeChunkIterator);
++
+             if (!this.field_73038_N.contains(chunkcoordintpair))
+             {
+-                int j = chunkcoordintpair.field_77276_a * 16;
+-                int k = chunkcoordintpair.field_77275_b * 16;
++                int chunkXPos = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordX(chunkcoordintpair);
++                int chunkZPos = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordZ(chunkcoordintpair);
++                int j = chunkXPos * 16;
++                int k = chunkZPos * 16;
+                 this.field_72984_F.func_76320_a("getChunk");
+-                Chunk chunk = this.func_72964_e(chunkcoordintpair.field_77276_a, chunkcoordintpair.field_77275_b);
++                Chunk chunk = this.func_72964_e(chunkXPos, chunkZPos);
+                 this.func_147467_a(j, k, chunk);
+                 this.field_72984_F.func_76319_b();
+-                this.field_73038_N.add(chunkcoordintpair);
++                net.minecraftforge.common.ForgeChunkManager.addPackedCoord(this.field_73038_N,chunkcoordintpair);
+                 ++i;
+ 
+                 if (i >= 10)

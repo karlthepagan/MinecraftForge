@@ -14,6 +14,15 @@
      private int field_181546_a = 63;
      protected boolean field_72999_e;
      public final List<Entity> field_72996_f = Lists.<Entity>newArrayList();
+@@ -90,7 +97,7 @@
+     private final Calendar field_83016_L = Calendar.getInstance();
+     protected Scoreboard field_96442_D = new Scoreboard();
+     public final boolean field_72995_K;
+-    protected Set<ChunkCoordIntPair> field_72993_I = Sets.<ChunkCoordIntPair>newHashSet();
++    protected Set<ChunkCoordIntPair> field_72993_I = net.minecraftforge.common.ForgeChunkManager.packedChunkCoordSet();
+     private int field_72990_M;
+     protected boolean field_72985_G;
+     protected boolean field_72992_H;
 @@ -98,6 +105,10 @@
      private final WorldBorder field_175728_M;
      int[] field_72994_J;
@@ -573,6 +582,15 @@
  
          for (int i = 0; i < this.field_73010_i.size(); ++i)
          {
+@@ -2390,7 +2554,7 @@
+             {
+                 for (int j1 = -l; j1 <= l; ++j1)
+                 {
+-                    this.field_72993_I.add(new ChunkCoordIntPair(i1 + j, j1 + k));
++                	net.minecraftforge.common.ForgeChunkManager.addActiveChunk(this.field_72993_I,i1 + j, j1 + k);
+                 }
+             }
+         }
 @@ -2434,8 +2598,9 @@
              Block block = p_147467_3_.func_177428_a(blockpos);
              j = j + p_147467_1_;
